@@ -1,4 +1,3 @@
-// In /api/api.go
 package api
 
 import (
@@ -14,7 +13,7 @@ func SetupRouter(appCtx *common.AppContext) *gin.Engine {
 		handlers.PingHandler(c, appCtx)
 	})
 
-	//TODO:  Add more routes here
+	//TODO: Add more routes here
 
 	return router
 }

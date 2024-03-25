@@ -38,6 +38,7 @@ func main() {
 
 	// Start the server on the specified port
 	router.Run(":" + port)
+
 	//router := gin.Default()
 	////router.GET("/get_histories", handlers.GetHistoriesHandler)
 	//router.GET("/ping", func(context *gin.Context) {
