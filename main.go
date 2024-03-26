@@ -7,6 +7,8 @@ import (
 	"SVN-interview/internal/common"
 	"github.com/joho/godotenv"
 	"os"
+	// Import your generated docs package
+	_ "SVN-interview/docs"
 )
 
 func main() {
