@@ -19,6 +19,10 @@ services:
       POSTGRES_DB: investment
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
 
   redis:
     image: redis
@@ -31,3 +35,6 @@ services:
     restart: always
     ports:
       - "8888:8080"
+
+volumes:
+  postgres_data:
