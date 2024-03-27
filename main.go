@@ -5,6 +5,7 @@ import (
 	"SVN-interview/infra/cache"
 	"SVN-interview/infra/db"
 	"SVN-interview/internal/common"
+	"SVN-interview/internal/entities"
 	"github.com/joho/godotenv"
 	"os"
 	// Import your generated docs package
@@ -22,6 +23,10 @@ func main() {
 	if err != nil {
 		panic("Failed to connect to database")
 	}
+
+	// Auto migrate
+	dbInstance.AutoMigrate(&entities.CoinOHLC{})
+
 	// Setup Redis
 	redisClient := cache.NewRedisClient()
 

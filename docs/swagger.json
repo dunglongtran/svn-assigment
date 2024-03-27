@@ -4,6 +4,64 @@
         "contact": {}
     },
     "paths": {
+        "/get-histories": {
+            "get": {
+                "description": "get historical open, high, low, and close data for a coin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coin"
+                ],
+                "summary": "Get historical OHLC data for a coin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coin Symbol",
+                        "name": "symbol",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Start Date",
+                        "name": "start_date",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "date",
+                        "description": "End Date",
+                        "name": "end_date",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Data period (30M, 1H, 1D)",
+                        "name": "period",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.CoinOHLCResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "do ping",
@@ -25,6 +83,40 @@
                             "additionalProperties": true
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handlers.CoinOHLCResponse": {
+            "type": "object",
+            "properties": {
+                "close": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "high": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "idCoin": {
+                    "type": "string"
+                },
+                "low": {
+                    "type": "number"
+                },
+                "open": {
+                    "type": "number"
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         }

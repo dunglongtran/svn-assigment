@@ -25,7 +25,9 @@ func SetupRouter(appCtx *common.AppContext) *gin.Engine {
 		handlers.PingHandler(c, appCtx)
 	})
 
-	//TODO: Add more routes here
+	router.GET("/get-histories", func(c *gin.Context) {
+		handlers.GetHistoriesHandler(c, appCtx)
+	})
 
 	return router
 }
