@@ -164,3 +164,17 @@ func reduceData(data []entities.CoinOHLC, interval common.PeriodEnum) []entities
 
 	return reducedData
 }
+func SaveOHLCFromPriceData(db *gorm.DB, ohlcData []entities.CoinOHLC) error {
+	// Sử dụng OnConflict để update nếu gặp conflict trên cặp khóa unique (IDCoin và Time), hoặc insert nếu không có conflict
+	err := db.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "idCoin"}, {Name: "time"}},                  // Định nghĩa cột bị conflict
+		DoUpdates: clause.AssignmentColumns([]string{"open", "high", "low", "close"}), // Cập nhật giá trị nếu conflict
+	}).Create(&ohlcData).Error // Chèn dữ liệu
+
+	if err != nil {
+		log.Printf("Error upserting OHLC data: %v", err)
+		return err
+	}
+
+	return nil
+}

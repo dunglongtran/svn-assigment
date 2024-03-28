@@ -1,14 +1,14 @@
 package main
 
 import (
-	"SVN-interview/cmd/api"
+	"SVN-interview/cmd/process"
 	"SVN-interview/infra/cache"
 	"SVN-interview/infra/db"
 	"SVN-interview/internal/common"
 	"SVN-interview/internal/entities"
-	cache2 "SVN-interview/pkg/cache"
 	"github.com/joho/godotenv"
-	"os"
+	"time"
+
 	// Import your generated docs package
 	_ "SVN-interview/docs"
 )
@@ -37,18 +37,12 @@ func main() {
 		DB:    dbInstance,
 		Cache: redisClient,
 	}
-	err := cache2.InitializeAllCoinsDates(appCtx.DB, appCtx.Cache)
-	if err != nil {
-		panic("Failed to init to cache")
-	}
-	router := api.SetupRouter(appCtx)
+	idCoin := "bitcoin"
+	layout := "2006-01-02"
+	startTime, _ := time.Parse(layout, "2024-02-20")
+	startTs := startTime.Unix()
+	endTime, _ := time.Parse(layout, "2024-03-20")
+	endTs := endTime.Unix()
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080" // Default to port 8080 if PORT is not set
-	}
-
-	// Start the server on the specified port
-	router.Run(":" + port)
-
+	process.GenerateOHLCPriceData(appCtx.DB, idCoin, startTs, endTs, common.Period1H)
 }
