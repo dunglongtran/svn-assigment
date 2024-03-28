@@ -39,7 +39,7 @@ func CalculateOHLC(prices []entities.CoinPrice, period common.PeriodEnum) []enti
 		periodSeconds = 1800 // Mặc định là 30 phút nếu không xác định được
 	}
 
-	// Tạo một map để lưu trữ dữ liệu OHLC theo khoảng thời gian
+	// map để lưu trữ  OHLC theo khoảng thời gian
 	ohlcMap := make(map[int64]*entities.CoinOHLC)
 	var prevIndex int64
 	if len(prices) > 0 {
