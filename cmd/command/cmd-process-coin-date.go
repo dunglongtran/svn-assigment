@@ -36,12 +36,25 @@ func main() {
 		DB:    dbInstance,
 		Cache: redisClient,
 	}
-	//cache2.InitializeAllCoinsDates(appCtx.DB, appCtx.Cache)
+	err = cache2.InitializeAllCoinsDates(appCtx.DB, appCtx.Cache)
+	if err != nil {
+		fmt.Println("Error initialize all coins dates  to Redis:", err)
+	}
 	//cache2.InitializeCoinDatesInRedis(appCtx.DB, appCtx.Cache, "bitcoin")
 	coinDates, err := cache2.ReadCoinDatesFromRedis(appCtx.Cache, "bitcoin")
 	if err != nil {
 		fmt.Println("Error reading coin dates from Redis:", err)
-		return
 	}
 	fmt.Println("Coin Dates:", coinDates["latestCheck"])
+	sortedCoinDates, err := cache2.FetchSortedCoinDates(appCtx.Cache, "coin_dates_latestCheck", 0, -1)
+	if err != nil {
+		fmt.Println("Error sorting coin"+
+			"dates from Redis:", err)
+	}
+	fmt.Println("sortedCoinDates", sortedCoinDates[0].Member)
+	//fmt.Println("sortedCoinDates", sortedCoinDates)
+	key := fmt.Sprintf("%v", sortedCoinDates[0].Member)
+	fmt.Println("key", key)
+	info, _ := cache2.ReadCoinDatesFromRedis(appCtx.Cache, "bitcoin")
+	fmt.Println("info", info["recentDate"])
 }

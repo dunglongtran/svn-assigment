@@ -59,7 +59,7 @@ func SaveCoinPriceData(db *gorm.DB, idCoin string, timestamp float64, price floa
 	return nil
 }
 
-func FetchCoinPriceData(db *gorm.DB, idCoin string, startTs, endTs int64) ([]entities.CoinPrice, error) {
+func LoadCoinPriceData(db *gorm.DB, idCoin string, startTs, endTs int64) ([]entities.CoinPrice, error) {
 	var prices []entities.CoinPrice
 	err := db.Where("\"idCoin\" = ? AND time >= ? AND time <= ?", idCoin, startTs, endTs).Order("time asc").Find(&prices).Error
 	if err != nil {

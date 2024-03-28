@@ -10,7 +10,7 @@ import (
 )
 
 func GenerateOHLCPriceData(db *gorm.DB, idCoin string, startTs, endTs int64, period common.PeriodEnum) error {
-	prices, err := repository.FetchCoinPriceData(db, idCoin, startTs, endTs)
+	prices, err := repository.LoadCoinPriceData(db, idCoin, startTs, endTs)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,10 @@ func CalculateOHLC(prices []entities.CoinPrice, period common.PeriodEnum) []enti
 
 	// Tạo một map để lưu trữ dữ liệu OHLC theo khoảng thời gian
 	ohlcMap := make(map[int64]*entities.CoinOHLC)
-	prevIndex := prices[0].Time / (periodSeconds)
+	var prevIndex int64
+	if len(prices) > 0 {
+		prevIndex = prices[0].Time / (periodSeconds)
+	}
 
 	for i, price := range prices {
 		// Xác định khoảng thời gian cho mỗi giá

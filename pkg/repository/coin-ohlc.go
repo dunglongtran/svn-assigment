@@ -41,10 +41,9 @@ import (
 //}
 
 func SaveCoinOHLCData(db *gorm.DB, idCoin string, ohlcData [][]float64) {
-	// Chuẩn bị một slice của CoinOHLC để chứa dữ liệu
+
 	var records []entities.CoinOHLC
 
-	// Lặp qua dữ liệu đầu vào và tạo các record
 	for _, ohlc := range ohlcData {
 		record := entities.CoinOHLC{
 			IDCoin: idCoin,
@@ -65,7 +64,6 @@ func SaveCoinOHLCData(db *gorm.DB, idCoin string, ohlcData [][]float64) {
 
 	if err != nil {
 		log.Printf("Error upserting records: %v", err)
-
 	}
 
 }
@@ -77,7 +75,7 @@ func LoadOHLCData(db *gorm.DB, idCoin string, startDate, endDate time.Time, peri
 	// Chuyển đổi startDate và endDate sang Unix timestamp để so sánh
 	startTs := startDate.Unix() * 1000
 	endTs := endDate.Unix() * 1000
-	intervalSeconds := getIntervalSeconds(period)
+	intervalSeconds := getIntervalSeconds(period) * 1000
 	//err = db.Raw(`
 	//        SELECT
 	//            FLOOR(EXTRACT(EPOCH FROM "time") / ?) * ? as time,
